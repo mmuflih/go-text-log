@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
+
+	"github.com/mmuflih/datelib"
 )
 
 type DataLog interface {
@@ -32,7 +35,7 @@ func (dl dataLog) Write(e error, data ...interface{}) {
 	if err != nil {
 		fmt.Println(err, "marshal")
 	}
-	text := `error with exception "` + e.Error() + `" data => ` + string(d)
+	text := time.Now().Format(datelib.DMY_HMS) + ` : error with exception "` + e.Error() + `" data => ` + string(d)
 	if _, err = f.WriteString(text + "\n"); err != nil {
 		panic(err)
 	}
