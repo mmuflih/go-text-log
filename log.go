@@ -39,7 +39,7 @@ func (dl dataLog) Write(e error, data ...interface{}) {
 	if err != nil {
 		fmt.Println(err, "marshal")
 	}
-	text := time.Now().Format(datelib.YMD_HMSM) + ` : error with exception "` + e.Error() + `" data => ` + string(d)
+	text := time.Now().Format(datelib.YMD_HMS_WS) + ` : error with exception "` + e.Error() + `" data => ` + string(d)
 	if _, err = f.WriteString(text + "\n"); err != nil {
 		panic(err)
 	}
