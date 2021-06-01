@@ -26,6 +26,9 @@ func New(fileName string, daily bool) DataLog {
 }
 
 func (dl dataLog) Write(e error, data ...interface{}) {
+	if data == nil {
+		return
+	}
 	f, err := os.OpenFile(dl.fileName, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		f, err = os.Create(dl.fileName)
