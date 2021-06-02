@@ -26,6 +26,7 @@ func New(fileName string, daily bool) DataLog {
 }
 
 func (dl dataLog) Write(e error, data ...interface{}) {
+	fmt.Println(e, data)
 	if data == nil {
 		return
 	}
@@ -42,7 +43,13 @@ func (dl dataLog) Write(e error, data ...interface{}) {
 	if err != nil {
 		fmt.Println(err, "marshal")
 	}
-	text := time.Now().Format(datelib.YMD_HMS_WS) + ` : error with exception "` + e.Error() + `" data => ` + string(d)
+	text := ""
+	if e == nil {
+		text = time.Now().Format(datelib.YMD_HMS_WS) + ` : data => ` + string(d)
+	} else {
+		text = time.Now().Format(datelib.YMD_HMS_WS) + ` : error with exception "` + e.Error() + `" data => ` + string(d)
+	}
+
 	if _, err = f.WriteString(text + "\n"); err != nil {
 		panic(err)
 	}
