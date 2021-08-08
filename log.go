@@ -17,10 +17,14 @@ type dataLog struct {
 	fileName string
 }
 
-func New(fileName string, daily bool) DataLog {
+func New(fileName string, daily bool, logPath ...string) DataLog {
+	path := ""
+	for _, p := range logPath {
+		path += p + "/"
+	}
 	if daily {
-		os.Mkdir("logs", 0600)
-		fileName = "logs/" + time.Now().Format(datelib.YMD) + "-" + fileName
+		os.Mkdir(path+"logs", 0600)
+		fileName = path + "logs/" + time.Now().Format(datelib.YMD) + "-" + fileName
 	}
 	return &dataLog{fileName}
 }
