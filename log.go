@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/mmuflih/datelib"
@@ -20,6 +21,9 @@ type dataLog struct {
 func New(fileName string, daily bool, logPath ...string) DataLog {
 	path := ""
 	for _, p := range logPath {
+		if strings.TrimSpace(p) == "" {
+			continue
+		}
 		path += p + "/"
 	}
 	if daily {
@@ -30,7 +34,6 @@ func New(fileName string, daily bool, logPath ...string) DataLog {
 }
 
 func (dl dataLog) Write(e error, data ...interface{}) {
-	fmt.Println(e, data)
 	if data == nil {
 		return
 	}
@@ -39,7 +42,7 @@ func (dl dataLog) Write(e error, data ...interface{}) {
 		f, err = os.Create(dl.fileName)
 	}
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error while createng file", err)
 	}
 
 	defer f.Close()
@@ -55,6 +58,6 @@ func (dl dataLog) Write(e error, data ...interface{}) {
 	}
 
 	if _, err = f.WriteString(text + "\n"); err != nil {
-		panic(err)
+		fmt.Println("Error writing log", err)
 	}
 }
